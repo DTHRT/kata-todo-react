@@ -5,16 +5,17 @@ import { Component } from 'react';
 
 export default class TaskList extends Component {
   render() {
-    const { todoData, onDeleted, onActive } = this.props;
+    const { filteredTodos, onDeleted, onActive } = this.props;
 
     return (
       <ul className="todo-list">
-        {todoData.map((todo) => (
+        {filteredTodos.map((todo) => (
           <Task
             label={todo.label}
             isActive={todo.isActive}
             onDeleted={() => onDeleted(todo.id)}
             onActive={() => onActive(todo.id)}
+            key={todo.id}
           />
         ))}
       </ul>

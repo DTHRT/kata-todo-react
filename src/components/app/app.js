@@ -13,6 +13,8 @@ export default class App extends Component {
       this.createTodoItem('Make Awesome App'),
       this.createTodoItem('Have a lunch'),
     ],
+
+    filter: 'all',
   };
 
   createTodoItem(label) {
@@ -65,12 +67,50 @@ export default class App extends Component {
     });
   };
 
+  updateShowData = (string) => {
+    this.setState(() => {
+      return {
+        filter: string,
+      };
+    });
+  };
+
+  clearCompleted = () => {
+    this.setState(({ todoData }) => {
+      const idToDelete = todoData
+        .filter((item) => !item.isActive)
+        .map((item) => item.id);
+
+      const newArray = todoData.filter((item) => !idToDelete.includes(item.id));
+
+      return {
+        todoData: newArray,
+      };
+    });
+  };
+
   render() {
+    const filteredTodos = this.state.todoData.filter((item) => {
+      if (this.state.filter === 'active') {
+        return item.isActive === true;
+      }
+
+      if (this.state.filter === 'completed') {
+        return item.isActive === false;
+      }
+
+      return item;
+    });
+
     return (
       <>
         <Header onItemAdded={this.addItem} />
         <Main
           todoData={this.state.todoData}
+          filter={this.state.filter}
+          filteredTodos={filteredTodos}
+          onClearCompleted={this.clearCompleted}
+          onUpdateShowData={this.updateShowData}
           onDeleted={this.deleteItem}
           onActive={this.tooggleActiveItem}
         />

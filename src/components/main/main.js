@@ -3,11 +3,28 @@ import './main.css';
 import TaskList from '../task-list';
 import Footer from '../footer';
 
-const Main = ({ todoData, onDeleted, onActive }) => {
+const Main = ({
+  todoData,
+  filter,
+  filteredTodos,
+  onDeleted,
+  onActive,
+  onUpdateShowData,
+  onClearCompleted,
+}) => {
   return (
     <section className="main">
-      <TaskList todoData={todoData} onDeleted={onDeleted} onActive={onActive} />
-      <Footer />
+      <TaskList
+        filteredTodos={filteredTodos}
+        onDeleted={onDeleted}
+        onActive={onActive}
+      />
+      <Footer
+        todoData={todoData}
+        onUpdateShowData={onUpdateShowData}
+        filter={filter}
+        onClearCompleted={onClearCompleted}
+      />
     </section>
   );
 };
