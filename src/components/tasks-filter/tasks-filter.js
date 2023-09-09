@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import './tasks-filter.css';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 
 const TasksFilter = ({ onUpdateShowData, filter }) => {
   return (
@@ -31,6 +32,16 @@ const TasksFilter = ({ onUpdateShowData, filter }) => {
       </li>
     </ul>
   );
+};
+
+TasksFilter.defaultProps = {
+  onUpdateShowData: () => {},
+  filter: '',
+};
+
+TasksFilter.propTypes = {
+  onUpdateShowData: PropTypes.func,
+  filter: PropTypes.string,
 };
 
 export default TasksFilter;

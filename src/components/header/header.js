@@ -1,6 +1,7 @@
 import './header.css';
 
 import NewTaskForm from '../new-task-form';
+import PropTypes from 'prop-types';
 
 const Header = ({ onItemAdded }) => {
   return (
@@ -10,6 +11,14 @@ const Header = ({ onItemAdded }) => {
       <NewTaskForm onItemAdded={onItemAdded} />
     </header>
   );
+};
+
+Header.defaultProps = {
+  onItemAdded: () => {},
+};
+
+Header.propTypes = {
+  onItemAdded: PropTypes.func,
 };
 
 export default Header;

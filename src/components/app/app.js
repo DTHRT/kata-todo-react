@@ -22,6 +22,7 @@ export default class App extends Component {
       label,
       isActive: true,
       id: this.initialId++,
+      date: new Date(),
     };
   }
 
@@ -105,6 +106,7 @@ export default class App extends Component {
     return (
       <>
         <Header onItemAdded={this.addItem} />
+
         <Main
           todoData={this.state.todoData}
           filter={this.state.filter}

@@ -1,7 +1,16 @@
 import { Component } from 'react';
 import './new-task-form.css';
+import PropTypes from 'prop-types';
 
 export default class NewTaskForm extends Component {
+  static defaultProps = {
+    onItemAdded: () => {},
+  };
+
+  static propTypes = {
+    onItemAdded: PropTypes.func,
+  };
+
   state = {
     label: '',
   };
@@ -16,12 +25,18 @@ export default class NewTaskForm extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.onItemAdded(this.state.label);
-    this.setState(() => {
-      return {
-        label: '',
-      };
-    });
+
+    const trimedLabel = this.state.label.trim();
+
+    if (trimedLabel !== '') {
+      this.props.onItemAdded(trimedLabel);
+
+      this.setState(() => {
+        return {
+          label: '',
+        };
+      });
+    }
   };
 
   render() {
