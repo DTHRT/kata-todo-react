@@ -1,32 +1,30 @@
+import { Component } from 'react';
 import './task.css';
 
-const Task = ({ className }) => {
-  const description =
-    className === 'completed'
-      ? 'Completed task'
-      : className === 'editing'
-      ? 'Editing task'
-      : 'Active task';
+export default class Task extends Component {
+  render() {
+    const { label, isActive, onDeleted, onActive } = this.props;
 
-  return (
-    <li className={className}>
-      <div className="view">
-        <input className="toggle" type="checkbox" />
-        <label>
-          <span className="description">{description}</span>
-          <span className="created">created 5 minutes ago</span>
-        </label>
-        <button className="icon icon-edit"></button>
-        <button className="icon icon-destroy"></button>
-      </div>
+    const className = isActive ? 'active' : 'completed';
 
-      {className === 'editing' ? (
-        <input type="text" className="edit" value="Editing task" />
-      ) : (
-        ''
-      )}
-    </li>
-  );
-};
+    return (
+      <li className={className}>
+        <div className="view">
+          <input className="toggle" type="checkbox" onClick={onActive} />
+          <label>
+            <span className="description">{label}</span>
+            <span className="created">created 5 minutes ago</span>
+          </label>
+          <button className="icon icon-edit"></button>
+          <button className="icon icon-destroy" onClick={onDeleted}></button>
+        </div>
 
-export default Task;
+        {className === 'editing' ? (
+          <input type="text" className="edit" defaultValue={label} />
+        ) : (
+          ''
+        )}
+      </li>
+    );
+  }
+}
