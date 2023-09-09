@@ -49,10 +49,7 @@ export default class App extends Component {
     this.setState(({ todoData }) => {
       const index = todoData.findIndex((todo) => todo.id === id);
 
-      const newArray = [
-        ...todoData.slice(0, index),
-        ...todoData.slice(index + 1),
-      ];
+      const newArray = [...todoData.slice(0, index), ...todoData.slice(index + 1)];
 
       return {
         todoData: newArray,
@@ -78,9 +75,7 @@ export default class App extends Component {
 
   clearCompleted = () => {
     this.setState(({ todoData }) => {
-      const idToDelete = todoData
-        .filter((item) => !item.isActive)
-        .map((item) => item.id);
+      const idToDelete = todoData.filter((item) => !item.isActive).map((item) => item.id);
 
       const newArray = todoData.filter((item) => !idToDelete.includes(item.id));
 

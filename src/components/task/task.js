@@ -8,27 +8,16 @@ const Task = ({ label, isActive, onDeleted, onActive, date }) => {
   return (
     <li className={className}>
       <div className="view">
-        <input
-          className="toggle"
-          type="checkbox"
-          onClick={onActive}
-          defaultChecked={!isActive}
-        />
+        <input className="toggle" type="checkbox" onClick={onActive} defaultChecked={!isActive} />
         <label>
           <span className="description">{label}</span>
-          <span className="created">
-            created {formatDistanceToNow(date)} ago
-          </span>
+          <span className="created">created {formatDistanceToNow(date)} ago</span>
         </label>
         <button className="icon icon-edit"></button>
         <button className="icon icon-destroy" onClick={onDeleted}></button>
       </div>
 
-      {className === 'editing' ? (
-        <input type="text" className="edit" defaultValue={label} />
-      ) : (
-        ''
-      )}
+      {className === 'editing' ? <input type="text" className="edit" defaultValue={label} /> : ''}
     </li>
   );
 };

@@ -7,18 +7,12 @@ const TasksFilter = ({ onUpdateShowData, filter }) => {
   return (
     <ul className="filters">
       <li>
-        <button
-          onClick={() => onUpdateShowData('all')}
-          className={classNames({ selected: filter === 'all' })}
-        >
+        <button onClick={() => onUpdateShowData('all')} className={classNames({ selected: filter === 'all' })}>
           All
         </button>
       </li>
       <li>
-        <button
-          onClick={() => onUpdateShowData('active')}
-          className={classNames({ selected: filter === 'active' })}
-        >
+        <button onClick={() => onUpdateShowData('active')} className={classNames({ selected: filter === 'active' })}>
           Active
         </button>
       </li>
