@@ -5,8 +5,6 @@ import PropTypes from 'prop-types'
 import TaskList from '../task-list'
 import Footer from '../footer'
 
-console.log('lol')
-
 function Main({ todoData, filter, filteredTodos, onDeleted, onActive, onUpdateShowData, onClearCompleted }) {
   return (
     <section className="main">
