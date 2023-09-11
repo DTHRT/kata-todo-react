@@ -1,18 +1,25 @@
-import { Component } from 'react';
-import './tasks-filter.css';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
+import './tasks-filter.css'
+import classNames from 'classnames'
+import PropTypes from 'prop-types'
 
-const TasksFilter = ({ onUpdateShowData, filter }) => {
+function TasksFilter({ onUpdateShowData, filter }) {
   return (
     <ul className="filters">
       <li>
-        <button onClick={() => onUpdateShowData('all')} className={classNames({ selected: filter === 'all' })}>
+        <button
+          onClick={() => onUpdateShowData('all')}
+          className={classNames({ selected: filter === 'all' })}
+          type="button"
+        >
           All
         </button>
       </li>
       <li>
-        <button onClick={() => onUpdateShowData('active')} className={classNames({ selected: filter === 'active' })}>
+        <button
+          onClick={() => onUpdateShowData('active')}
+          className={classNames({ selected: filter === 'active' })}
+          type="button"
+        >
           Active
         </button>
       </li>
@@ -20,22 +27,23 @@ const TasksFilter = ({ onUpdateShowData, filter }) => {
         <button
           onClick={() => onUpdateShowData('completed')}
           className={classNames({ selected: filter === 'completed' })}
+          type="button"
         >
           Completed
         </button>
       </li>
     </ul>
-  );
-};
+  )
+}
 
 TasksFilter.defaultProps = {
   onUpdateShowData: () => {},
   filter: '',
-};
+}
 
 TasksFilter.propTypes = {
   onUpdateShowData: PropTypes.func,
   filter: PropTypes.string,
-};
+}
 
-export default TasksFilter;
+export default TasksFilter

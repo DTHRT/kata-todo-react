@@ -1,38 +1,47 @@
-import './task-list.css';
+import './task-list.css'
 
-import Task from '../task';
-import { Component } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
-export default class TaskList extends Component {
-  static defaultProps = {
-    filteredTodos: [],
-    onDeleted: () => {},
-    onActive: () => {},
-  };
+import Task from '../task'
 
-  static propTypes = {
-    filteredTodos: PropTypes.array,
-    onDeleted: PropTypes.func,
-    onActive: PropTypes.func,
-  };
-
-  render() {
-    const { filteredTodos, onDeleted, onActive } = this.props;
-
-    return (
-      <ul className="todo-list">
-        {filteredTodos.map((todo) => (
-          <Task
-            label={todo.label}
-            isActive={todo.isActive}
-            onDeleted={() => onDeleted(todo.id)}
-            onActive={() => onActive(todo.id)}
-            date={todo.date}
-            key={todo.id}
-          />
-        ))}
-      </ul>
-    );
-  }
+function TaskList({ filteredTodos, onDeleted, onActive }) {
+  return (
+    <ul className="todo-list">
+      {filteredTodos.map((todo) => (
+        <Task
+          label={todo.label}
+          isActive={todo.isActive}
+          onDeleted={() => onDeleted(todo.id)}
+          onActive={() => onActive(todo.id)}
+          date={todo.date}
+          key={`${todo.label}_${todo.id}`}
+        />
+      ))}
+    </ul>
+  )
 }
+
+TaskList.defaultProps = {
+  filteredTodos: [],
+  onDeleted: () => {},
+  onActive: () => {},
+}
+
+TaskList.propTypes = {
+  filteredTodos: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string,
+      isActive: PropTypes.bool,
+      id: PropTypes.number,
+      date: PropTypes.shape({
+        year: PropTypes.number,
+        month: PropTypes.number,
+        day: PropTypes.number,
+      }),
+    }),
+  ),
+  onDeleted: PropTypes.func,
+  onActive: PropTypes.func,
+}
+
+export default TaskList

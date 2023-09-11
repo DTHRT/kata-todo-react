@@ -9,7 +9,8 @@
     "plugin:react/recommended",
     "plugin:prettier/recommended",
     "plugin:import/errors",
-    "plugin:import/warnings"
+    "plugin:import/warnings",
+    "airbnb"
   ],
   "parserOptions": {
     "ecmaFeatures": {
@@ -18,10 +19,14 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react", "prettier", "import"],
+  "plugins": ["react", "import", "prettier"],
   "rules": {
     "indent": ["error", 2],
-    "prettier/prettier": "error",
+    "prettier/prettier": [
+      "error",
+      { "trailingComma": "all", "singleQuote": true, "endOfLine": "lf", "printWidth": 120, "semi": false }
+    ],
+    "max-len": ["error", { "code": 150 }],
     "linebreak-style": [0, "unix"],
     "quotes": ["error", "single"],
     "semi": ["error", "never"],
@@ -35,7 +40,9 @@
         "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
         "newlines-between": "always"
       }
-    ]
+    ],
+    "object-curly-newline": ["error", { "multiline": true, "consistent": true }],
+    "no-plusplus": "off"
   },
   "settings": {
     "import/resolver": {
