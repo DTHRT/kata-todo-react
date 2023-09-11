@@ -5,10 +5,10 @@ import PropTypes from 'prop-types'
 import TaskList from '../task-list'
 import Footer from '../footer'
 
-function Main({ todoData, filter, filteredTodos, onDeleted, onActive, onUpdateShowData, onClearCompleted }) {
+function Main({ todoData, filter, filteredTodos, onDeleted, onActive, onUpdateShowData, onClearCompleted, onEdited }) {
   return (
     <section className="main">
-      <TaskList filteredTodos={filteredTodos} onDeleted={onDeleted} onActive={onActive} />
+      <TaskList filteredTodos={filteredTodos} onDeleted={onDeleted} onActive={onActive} onEdited={onEdited} />
 
       <Footer
         todoData={todoData}

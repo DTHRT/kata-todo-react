@@ -27,6 +27,20 @@ export default class App extends Component {
       }))
     }
 
+    this.editItem = (id, string) => {
+      this.setState(({ todoData }) => {
+        const item = todoData.find((todo) => todo.id === id)
+        const newItem = { ...item }
+        newItem.label = string
+
+        const index = todoData.findIndex((todo) => todo.id === id)
+
+        return {
+          todoData: [...todoData.slice(0, index), newItem, ...todoData.slice(index + 1)],
+        }
+      })
+    }
+
     this.deleteItem = (id) => {
       this.setState(({ todoData }) => {
         const index = todoData.findIndex((todo) => todo.id === id)
@@ -109,6 +123,7 @@ export default class App extends Component {
           onUpdateShowData={this.updateShowData}
           onDeleted={this.deleteItem}
           onActive={this.toggleActiveItem}
+          onEdited={this.editItem}
         />
       </>
     )

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import Task from '../task'
 
-function TaskList({ filteredTodos, onDeleted, onActive }) {
+function TaskList({ filteredTodos, onDeleted, onActive, onEdited }) {
   return (
     <ul className="todo-list">
       {filteredTodos.map((todo) => (
@@ -15,6 +15,8 @@ function TaskList({ filteredTodos, onDeleted, onActive }) {
           onActive={() => onActive(todo.id)}
           date={todo.date}
           key={`${todo.label}_${todo.id}`}
+          onEdited={onEdited}
+          id={todo.id}
         />
       ))}
     </ul>

@@ -22,7 +22,7 @@ export default class NewTaskForm extends Component {
       const { label } = this.state
       const trimedLabel = label.trim()
 
-      if (trimedLabel !== '') {
+      if (trimedLabel) {
         const { onItemAdded } = this.props
         onItemAdded(trimedLabel)
 
