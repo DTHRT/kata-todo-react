@@ -11,27 +11,28 @@ export default class App extends Component {
     this.initialId = 0
     this.state = {
       todoData: [
-        this.createTodoItem('Drink Coffee'),
-        this.createTodoItem('Make Awesome App'),
-        this.createTodoItem('Have a lunch'),
+        this.createTodoItem('Task 1', 60),
+        this.createTodoItem('Task 2', 120),
+        this.createTodoItem('Task 3', 300),
       ],
 
       filter: 'all',
     }
 
-    this.addItem = (string) => {
-      const newItem = this.createTodoItem(string)
+    this.addItem = (string, seconds) => {
+      const newItem = this.createTodoItem(string, seconds)
 
       this.setState(({ todoData }) => ({
         todoData: [...todoData, newItem],
       }))
     }
 
-    this.editItem = (id, string) => {
+    this.editItem = (id, string, seconds) => {
       this.setState(({ todoData }) => {
         const item = todoData.find((todo) => todo.id === id)
         const newItem = { ...item }
         newItem.label = string
+        newItem.seconds = seconds
 
         const index = todoData.findIndex((todo) => todo.id === id)
 
@@ -87,12 +88,13 @@ export default class App extends Component {
     }
   }
 
-  createTodoItem(label) {
+  createTodoItem(label, seconds) {
     return {
       label,
       isActive: true,
       id: this.initialId++,
       date: new Date(),
+      seconds,
     }
   }
 

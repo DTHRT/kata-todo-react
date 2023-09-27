@@ -17,6 +17,7 @@ function TaskList({ filteredTodos, onDeleted, onActive, onEdited }) {
           key={`${todo.label}_${todo.id}`}
           onEdited={onEdited}
           id={todo.id}
+          seconds={todo.seconds}
         />
       ))}
     </ul>
