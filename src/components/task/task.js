@@ -1,137 +1,115 @@
+/* eslint-disable no-unused-vars */
 import './task.css'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import PropTypes from 'prop-types'
-import { Component } from 'react'
+import { useEffect, useState } from 'react'
 
 import formatTime from '../../utils/formatTime'
 
-export default class Task extends Component {
-  constructor(props) {
-    super(props)
+function Task({ seconds: propSeconds, onEdited, id, label: propLabel, isActive, onDeleted, onActive, date }) {
+  const [label, setLabel] = useState('')
+  const [isEdit, setIsEdit] = useState(false)
+  const [seconds, setSeconds] = useState(propSeconds)
+  const [isTimerOn, setIsTimerOn] = useState(false)
+  const [timerID, setTimerID] = useState(null)
 
-    this.state = {
-      label: '',
-      isEdit: false,
-      seconds: props.seconds,
-      isTimerOn: false,
-    }
+  const onEdit = () => {
+    setIsEdit((prev) => !prev)
+  }
 
-    this.onEdit = () => {
-      this.setState(() => ({
-        isEdit: !this.isEdit,
-      }))
-    }
+  const onLabelChange = (e) => {
+    clearInterval(timerID)
+    setLabel(e.target.value)
+  }
 
-    this.onLabelChange = (e) => {
-      clearInterval(this.timerID)
+  const onSubmit = (e) => {
+    e.preventDefault()
 
-      this.setState(() => ({
-        label: e.target.value,
-      }))
-    }
+    const trimedLabel = label
 
-    this.onSubmit = (e) => {
-      e.preventDefault()
+    if (trimedLabel) {
+      onEdited(id, trimedLabel, seconds)
 
-      const { label, seconds } = this.state
-      const trimedLabel = label
-
-      if (trimedLabel) {
-        const { onEdited, id } = this.props
-
-        onEdited(id, trimedLabel, seconds)
-
-        this.setState(() => ({
-          label: '',
-          isEdit: false,
-        }))
-      }
-    }
-
-    this.launchTimer = () => {
-      this.timerID = setInterval(() => this.tick(), 1000)
-      this.setState(() => ({
-        isTimerOn: true,
-      }))
-    }
-
-    this.stopTimer = () => {
-      clearInterval(this.timerID)
-      this.setState(() => ({
-        isTimerOn: false,
-      }))
+      setLabel('')
+      setIsEdit(false)
     }
   }
 
-  componentWillUnmount() {
-    clearInterval(this.timerID)
-  }
-
-  tick() {
-    this.setState((prevState) => {
-      if (prevState.seconds === 0) {
-        clearInterval(this.timerID)
-        return {}
+  function tick() {
+    setSeconds((prevSeconds) => {
+      if (prevSeconds === 0) {
+        clearInterval(timerID)
+        return 0
       }
 
-      return {
-        seconds: prevState.seconds - 1,
-      }
+      return prevSeconds - 1
     })
   }
 
-  render() {
-    const { label, isActive, onDeleted, onActive, date } = this.props
+  const launchTimer = () => {
+    setTimerID(setInterval(() => tick(), 1000))
 
-    let className = isActive ? 'active' : 'completed'
+    setIsTimerOn(true)
+  }
 
-    const { isEdit } = this.state
+  const stopTimer = () => {
+    clearInterval(timerID)
 
-    if (isEdit) {
-      className = 'editing'
-    }
+    setIsTimerOn(false)
+  }
 
-    const { seconds, isTimerOn } = this.state
+  useEffect(() => {
+    clearInterval(timerID)
+  }, [])
 
-    return (
-      <li className={className}>
-        <div className="view">
-          <input className="toggle" type="checkbox" onClick={onActive} defaultChecked={!isActive} />
-          <label htmlFor="#">
-            <span className="title">{label}</span>
-            <span className="description">
-              <button
-                type="button"
-                className="icon icon-play"
-                aria-label="play"
-                onClick={this.launchTimer}
-                disabled={isTimerOn}
-              />
+  let className = isActive ? 'active' : 'completed'
+
+  if (isEdit) {
+    className = 'editing'
+  }
+
+  return (
+    <li className={className}>
+      <div className="view">
+        <input className="toggle" type="checkbox" onClick={onActive} defaultChecked={!isActive} />
+        <label htmlFor="#">
+          <span className="title">{propLabel}</span>
+          <span className="description">
+            {seconds && isTimerOn ? (
               <button
                 type="button"
                 className="icon icon-pause"
                 aria-label="pause"
-                onClick={this.stopTimer}
-                disabled={!isTimerOn}
+                onClick={stopTimer}
+                // disabled={!isTimerOn}
               />
-              {` ${formatTime(seconds)}`}
-            </span>
-            <span className="description">{`created ${formatDistanceToNow(date)} ago`}</span>
-          </label>
-          <button className="icon icon-edit" type="button" aria-label="edit" onClick={this.onEdit} />
-          <button className="icon icon-destroy" type="button" aria-label="delete" onClick={onDeleted} />
-        </div>
+            ) : (
+              <button
+                type="button"
+                className="icon icon-play"
+                aria-label="play"
+                onClick={launchTimer}
+                // disabled={isTimerOn}
+              />
+            )}
 
-        {className === 'editing' ? (
-          <form onSubmit={this.onSubmit}>
-            <input type="text" className="edit" defaultValue={label} onChange={this.onLabelChange} />
-          </form>
-        ) : (
-          ''
-        )}
-      </li>
-    )
-  }
+            {` ${formatTime(seconds)}`}
+          </span>
+          <span className="description">{`created ${formatDistanceToNow(date)} ago`}</span>
+        </label>
+        <button className="icon icon-edit" type="button" aria-label="edit" onClick={onEdit} />
+        <button className="icon icon-destroy" type="button" aria-label="delete" onClick={onDeleted} />
+      </div>
+
+      {className === 'editing' ? (
+        <form onSubmit={onSubmit}>
+          <input type="text" className="edit" defaultValue={propLabel} onChange={onLabelChange} />
+        </form>
+      ) : (
+        ''
+      )}
+    </li>
+  )
 }
 
 Task.defaultProps = {
@@ -153,3 +131,5 @@ Task.propTypes = {
     day: PropTypes.number,
   }),
 }
+
+export default Task

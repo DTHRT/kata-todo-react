@@ -1,99 +1,74 @@
-/* eslint-disable react/no-unused-class-component-methods */
-/* eslint-disable no-unused-vars */
-import { Component } from 'react'
+import { useState } from 'react'
 import './new-task-form.css'
 import PropTypes from 'prop-types'
 
 import containNumbersTest from '../../utils/containNumbersTest'
 
-export default class NewTaskForm extends Component {
-  constructor(props) {
-    super(props)
+function NewTaskForm({ onItemAdded }) {
+  const [label, setLabel] = useState('')
+  const [time, setTime] = useState({
+    min: '',
+    sec: '',
+  })
 
-    this.state = {
-      label: '',
-      min: '',
-      sec: '',
-    }
+  const onLabelChange = (e) => {
+    setLabel(e.target.value)
+  }
 
-    this.onLabelChange = (e) => {
-      this.setState(() => ({
-        label: e.target.value,
-      }))
-    }
+  const onMinuteChange = (e) => {
+    const inputValue = e.target.value
 
-    this.onMinuteChange = (e) => {
-      const inputValue = e.target.value
-
-      if (containNumbersTest(inputValue)) {
-        this.setState(() => ({
-          min: inputValue,
-        }))
-      }
-    }
-
-    this.onSecondChange = (e) => {
-      const inputValue = e.target.value
-
-      if (containNumbersTest(inputValue)) {
-        this.setState(() => ({
-          sec: e.target.value,
-        }))
-      }
-    }
-
-    this.onSubmit = (e) => {
-      e.preventDefault()
-
-      const { label, min, sec } = this.state
-      const trimedLabel = label.trim()
-
-      const seconds = Number(min) * 60 + Number(sec)
-
-      if (trimedLabel) {
-        const { onItemAdded } = this.props
-        onItemAdded(trimedLabel, seconds)
-
-        this.setState(() => ({
-          label: '',
-          min: '',
-          sec: '',
-        }))
-      }
+    if (containNumbersTest(inputValue)) {
+      setTime((prev) => ({ ...prev, min: inputValue }))
     }
   }
 
-  render() {
-    const { label, min, sec } = this.state
-    return (
-      <form className="new-todo-form" onSubmit={this.onSubmit}>
-        <input
-          className="new-todo"
-          placeholder="What needs to be done?"
-          value={label}
-          onChange={this.onLabelChange}
-          name="label"
-        />
-        <input
-          className="new-todo-form__timer"
-          placeholder="Min"
-          value={min}
-          onChange={this.onMinuteChange}
-          name="min"
-        />
-        <input
-          className="new-todo-form__timer"
-          placeholder="Sec"
-          value={sec}
-          onChange={this.onSecondChange}
-          name="sec "
-        />
-        <button className="visually-hidden" type="submit">
-          qwe
-        </button>
-      </form>
-    )
+  const onSecondChange = (e) => {
+    const inputValue = e.target.value
+
+    if (containNumbersTest(inputValue)) {
+      setTime((prev) => ({ ...prev, sec: inputValue }))
+    }
   }
+
+  const onSubmit = (e) => {
+    e.preventDefault()
+
+    const { min, sec } = time
+
+    const trimedLabel = label.trim()
+
+    const seconds = Number(min) * 60 + Number(sec)
+
+    if (trimedLabel) {
+      onItemAdded(trimedLabel, seconds)
+
+      setLabel('')
+      setTime({
+        min: '',
+        sec: '',
+      })
+    }
+  }
+
+  const { min, sec } = time
+
+  return (
+    <form className="new-todo-form" onSubmit={onSubmit}>
+      <input
+        className="new-todo"
+        placeholder="What needs to be done?"
+        value={label}
+        onChange={onLabelChange}
+        name="label"
+      />
+      <input className="new-todo-form__timer" placeholder="Min" value={min} onChange={onMinuteChange} name="min" />
+      <input className="new-todo-form__timer" placeholder="Sec" value={sec} onChange={onSecondChange} name="sec" />
+      <button className="visually-hidden" type="submit">
+        qwe
+      </button>
+    </form>
+  )
 }
 
 NewTaskForm.defaultProps = {
@@ -103,3 +78,5 @@ NewTaskForm.defaultProps = {
 NewTaskForm.propTypes = {
   onItemAdded: PropTypes.func,
 }
+
+export default NewTaskForm
